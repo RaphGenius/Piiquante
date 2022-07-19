@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRoutes = require("./routes/user");
+const sauceRoutes = require("./routes/sauce");
 const app = express();
 mongoose
   .connect(
@@ -25,26 +25,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("./api/sauces", (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({ message: "objet créé" });
-});
-app.use("./api/sauces", (req, res, next) => {
-  const sauce = [
-    {
-      userId: "ztaetaetae",
-      name: "Sauce 1",
-      manufacturer: "testest",
-      description: "Une sauce de ouf malade",
-      mainPepper: "",
-      imageUrl: "",
-      heat: 5,
-      likes: 2,
-      dislikes: 5,
-      usersLiked: [userId],
-      userDisliked: [userId],
-    },
-  ];
-});
+app.use("/api/sauces", sauceRoutes); // L'url de la source est /api/sauce et la suite se situe dans sauceRoutes
 
-module.exports = app;
+app.listen(3000, () => {
+  console.log(`Listening on port 3000`);
+});
