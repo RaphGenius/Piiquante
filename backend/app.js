@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 app.use("/api/auth", userRoutes); // L'url de la source est /api/auth et la suite se situe dans userRoutes
 app.use("/api/sauces", sauceRoutes); // L'url de la source est /api/sauce et la suite se situe dans sauceRoutes
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/image", express.static(path.join(__dirname, "image")));
 
 app.listen(3000, () => {
   console.log(`Listening on port 3000`);
