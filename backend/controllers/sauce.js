@@ -1,19 +1,5 @@
 const Sauce = require("../models/sauce");
 const fs = require("fs");
-/* exports.createSauce = (req, res, next) => {
-  // Permet de creer une nouvelle sauce
-  delete req.body.userId;
-  delete req.body._id;
-  console.log(req.body.sauce);
-  const sauce = new Sauce({
-    ...req.body,
-  });
-  console.log(sauce);
-  sauce
-    .save() // .save() permet d'enregistrer notre objet
-    .then(() => res.status(201).json({ message: "objet enregistré" }))
-    .catch((error) => res.status(400).json({ error }));
-}; */
 
 exports.createSauce = (req, res, next) => {
   console.log(req.body.sauce);
