@@ -3,6 +3,13 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken"); // package permettant la création de token
 
 exports.signup = (req, res, next) => {
+  /*   const passwordRegex = new RegExp(`^[A-Za-z-\é\ê\è\ë\s\']+$`);
+  let testPassword = passwordRegex.test(req.body.password);
+  console.log(req.body.password);
+  console.log(testPassword);
+  if (!testPassword) {
+    console.log("c'est pas bon");
+  }  */
   bcrypt
     .hash(req.body.password, 10) // .hash(element à hasher, nombre de salage) permet de hasher un élément ciblé
     .then((hash) => {
@@ -11,6 +18,7 @@ exports.signup = (req, res, next) => {
         email: req.body.email,
         password: hash,
       });
+
       user
         .save() // On enregistre l'utilisateur dans la base de donnée
         .then(() => res.status(201).json({ message: "Utilisateur crée" }))

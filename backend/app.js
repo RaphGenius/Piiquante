@@ -4,6 +4,7 @@ const sauceRoutes = require("./routes/sauce");
 const userRoutes = require("./routes/user");
 const path = require("path");
 const app = express();
+const helmet = require("helmet");
 mongoose
   .connect(
     "mongodb+srv://roger:roger@cluster0.gznafw4.mongodb.net/?retryWrites=true&w=majority",
@@ -13,7 +14,11 @@ mongoose
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
 app.use(express.json());
-
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -24,6 +29,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
+  res.setHeader("Cross-Origin-Resource-Policy", "same-site");
   next();
 });
 
