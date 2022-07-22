@@ -1,7 +1,6 @@
 const sauce = require("../models/sauce");
 
 exports.likeSauce = (req, res, next) => {
-  console.log("je suis dans le controlleur lik,");
   sauce
     .findOne({ _id: req.params.id })
     .then((sauce) => {

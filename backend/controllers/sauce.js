@@ -29,7 +29,7 @@ exports.modifySauce = (req, res, next) => {
         }`,
       }
     : { ...req.body };
-  delete sauceObject._userId;
+  delete sauceObject._userId; // ???? pourquoi underscore
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       if (sauce.userId != req.auth.userId) {
