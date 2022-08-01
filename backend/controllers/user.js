@@ -3,30 +3,33 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken"); // package permettant la création de token
 const cryptojs = require("crypto-js");
 exports.signup = (req, res, next) => {
-  /*   const emailCrypt = cryptojs
+  const emailCrypt = cryptojs
     .HmacSHA256(req.body.email, "SECRET_KEY_MAIL")
-    .toString(); */
+    .toString();
   bcrypt
     .hash(req.body.password, 10) // .hash(element à hasher, nombre de salage) permet de hasher un élément ciblé
     .then((hash) => {
       // Création de l'utilisateur
       const user = new User({
-        email: req.body.email,
+        email: emailCrypt,
         password: hash,
       });
       console.log(user);
       user
         .save() // On enregistre l'utilisateur dans la base de donnée
         .then(() => res.status(201).json({ message: "Utilisateur crée" }))
-        .catch((error) => res.status(400).json(console.log(error)));
+        .catch((error) => res.status(400).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
 };
 
 exports.login = (req, res, next) => {
+  const emailDecrypt = cryptojs
+    .HmacSHA256(req.body.email, "SECRET_KEY_MAIL")
+    .toString();
   User.findOne({
     // Permet de trouver un élément selon un paramètre
-    email: req.body.email,
+    email: emailDecrypt,
   })
     .then((user) => {
       if (user === null) {
