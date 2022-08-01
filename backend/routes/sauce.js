@@ -12,6 +12,6 @@ router.post("/", auth, multer, sauceController.createSauce); // Creer une sauce
 router.get("/:id", auth, sauceController.getOneSauce); // Avoir une seule sauce
 router.put("/:id", auth, multer, sauceController.modifySauce); // Modifier une sauce
 router.delete("/:id", auth, sauceController.deleteSauce); // Supprimer une sauce
-router.post("/:id/like", sauceLikeCOntroller.likeSauce); // Liker une sauce
+router.post("/:id/like", auth, sauceLikeCOntroller.likeSauce); // Liker une sauce
 
 module.exports = router;

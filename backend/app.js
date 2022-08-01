@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const sauceRoutes = require("./routes/sauce");
@@ -5,20 +6,29 @@ const userRoutes = require("./routes/user");
 const path = require("path");
 const app = express();
 const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+app.use(express.json());
 mongoose
-  .connect(
-    "mongodb+srv://roger:roger@cluster0.gznafw4.mongodb.net/?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGODB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-app.use(express.json());
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
   })
 );
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, //
+  max: 150, //
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+app.use(limiter);
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
