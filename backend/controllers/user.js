@@ -1,10 +1,11 @@
+require("dotenv").config();
 const bcrypt = require("bcrypt"); // npm install --save bcrypt pour installer le package bcrypt, permettant de hasher les mots de passes
 const User = require("../models/user");
 const jwt = require("jsonwebtoken"); // package permettant la création de token
 const cryptojs = require("crypto-js");
 exports.signup = (req, res, next) => {
   const emailCrypt = cryptojs
-    .HmacSHA256(req.body.email, "SECRET_KEY_MAIL")
+    .HmacSHA256(req.body.email, `${process.env.CRYPTOJS}`)
     .toString();
   bcrypt
     .hash(req.body.password, 10) // .hash(element à hasher, nombre de salage) permet de hasher un élément ciblé
@@ -25,7 +26,7 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
   const emailDecrypt = cryptojs
-    .HmacSHA256(req.body.email, "SECRET_KEY_MAIL")
+    .HmacSHA256(req.body.email, `${process.env.CRYPTOJS}`)
     .toString();
   User.findOne({
     // Permet de trouver un élément selon un paramètre
